@@ -6,12 +6,17 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.SearchView
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.view.details.DetailsActivity
 import com.davidbragadeveloper.filmica.view.details.DetailsFragment
 import com.davidbragadeveloper.filmica.view.search.SearchFragment
 import com.davidbragadeveloper.filmica.view.trendinglist.TrendingFragment
+import com.davidbragadeveloper.filmica.view.utils.QueryTextChangeListener
 import com.davidbragadeveloper.filmica.view.utils.addFragmentsToContainer
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
 import com.davidbragadeveloper.filmica.view.utils.hideFragments
@@ -29,6 +34,7 @@ class FilmsActivity : AppCompatActivity(),
 
     private var fragments : MutableMap<String, Fragment> = mutableMapOf()
     private lateinit var activeFragement : Fragment
+    private var menu : Menu? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,17 +50,37 @@ class FilmsActivity : AppCompatActivity(),
 
         navigation?.setOnNavigationItemSelectedListener {
             val id = it.itemId
+            var tag : String? = null
             when (id) {
-                R.id.action_discover -> showMainFragment(fragments[FILMS_TAG]!!)
-                R.id.action_watchlist -> showMainFragment(fragments[WATCHLIST_TAG]!!)
-                R.id.action_trendinglist -> showMainFragment(fragments[TRENDING_TAG]!!)
-                R.id.action_search -> showMainFragment(fragments[SEARCH_TAG]!!)
+                R.id.action_discover -> tag = FILMS_TAG
+                R.id.action_watchlist -> tag = WATCHLIST_TAG
+                R.id.action_trendinglist -> tag = TRENDING_TAG
+                R.id.action_search -> tag = SEARCH_TAG
+            }
 
-                }
+            showMainFragment(fragments[tag ?: FILMS_TAG]!!)
+            menu?.let{
+                val menuItem = it.findItem(R.id.search_menu)
+                menuItem.isVisible = tag == SEARCH_TAG
+                val searchView = menuItem.actionView as SearchView
+                searchView.setOnQueryTextListener(QueryTextChangeListener())
+            }
             true
         }
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        this.menu = menu
+        return true
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -76,6 +102,7 @@ class FilmsActivity : AppCompatActivity(),
             .commit()
 
         activeFragement = fragments[FILMS_TAG]!!
+
     }
 
     private fun restoreFragments(activeFragmentTag: String) {
@@ -83,6 +110,8 @@ class FilmsActivity : AppCompatActivity(),
         fragments[WATCHLIST_TAG] =  supportFragmentManager.findFragmentByTag(WATCHLIST_TAG) as WatchListFragment
         fragments[TRENDING_TAG] = supportFragmentManager.findFragmentByTag(TRENDING_TAG) as TrendingFragment
         fragments[SEARCH_TAG] = supportFragmentManager.findFragmentByTag(SEARCH_TAG) as SearchFragment
+
+
 
         activeFragement = fragments[activeFragmentTag]!!
 
