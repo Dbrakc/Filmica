@@ -10,8 +10,11 @@ import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.view.details.DetailsActivity
 import com.davidbragadeveloper.filmica.view.details.DetailsFragment
+import com.davidbragadeveloper.filmica.view.search.SearchFragment
 import com.davidbragadeveloper.filmica.view.trendinglist.TrendingFragment
+import com.davidbragadeveloper.filmica.view.utils.addFragmentsToContainer
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
+import com.davidbragadeveloper.filmica.view.utils.hideFragments
 import com.davidbragadeveloper.filmica.view.watchlist.WatchListFragment
 import kotlinx.android.synthetic.main.activity_films.*
 
@@ -19,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_films.*
 const val FILMS_TAG = "films"
 const val WATCHLIST_TAG = "watchlist"
 const val TRENDING_TAG = "trendingList"
+const val SEARCH_TAG = "search"
 
 class FilmsActivity : AppCompatActivity(),
     BaseGridFilmsFragment.OnItemClickListener {
@@ -26,6 +30,7 @@ class FilmsActivity : AppCompatActivity(),
     private lateinit var filmsFragment : FilmsFragment
     private lateinit var watchListFragment : WatchListFragment
     private lateinit var trendingFragment : TrendingFragment
+    private lateinit var searchFragment : SearchFragment
     private lateinit var activeFragement : Fragment
 
 
@@ -47,6 +52,7 @@ class FilmsActivity : AppCompatActivity(),
                 R.id.action_discover -> showMainFragment(filmsFragment)
                 R.id.action_watchlist -> showMainFragment(watchListFragment)
                 R.id.action_trendinglist -> showMainFragment(trendingFragment)
+                R.id.action_search -> showMainFragment(searchFragment)
 
                 }
 
@@ -65,12 +71,16 @@ class FilmsActivity : AppCompatActivity(),
         filmsFragment = FilmsFragment()
         watchListFragment = WatchListFragment()
         trendingFragment = TrendingFragment()
+        searchFragment = SearchFragment()
+        val fragments: Map<String, Fragment> = mapOf(
+            FILMS_TAG to filmsFragment,
+            WATCHLIST_TAG to watchListFragment,
+            TRENDING_TAG to trendingFragment,
+            SEARCH_TAG to searchFragment)
+
         supportFragmentManager.beginTransaction()
-            .add(R.id.container_list, filmsFragment, FILMS_TAG )
-            .add(R.id.container_list, watchListFragment, WATCHLIST_TAG)
-            .add(R.id.container_list, trendingFragment, TRENDING_TAG)
-            .hide(watchListFragment)
-            .hide(trendingFragment)
+            .addFragmentsToContainer(R.id.container_list, fragments)
+            .hideFragments(fragments.filter {it.key != FILMS_TAG}.values.toList())
             .commit()
 
         activeFragement = filmsFragment
@@ -128,6 +138,6 @@ class FilmsActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction()
             .replace(R.id.containerDetails, detailsFragment)
             .commit()
-
     }
+
 }
