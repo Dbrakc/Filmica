@@ -27,17 +27,13 @@ const val SEARCH_TAG = "search"
 class FilmsActivity : AppCompatActivity(),
     BaseGridFilmsFragment.OnItemClickListener {
 
-    private lateinit var filmsFragment : FilmsFragment
-    private lateinit var watchListFragment : WatchListFragment
-    private lateinit var trendingFragment : TrendingFragment
-    private lateinit var searchFragment : SearchFragment
+    private var fragments : MutableMap<String, Fragment> = mutableMapOf()
     private lateinit var activeFragement : Fragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_films)
-
 
         if (savedInstanceState == null) {
             setUpFragments()
@@ -49,13 +45,12 @@ class FilmsActivity : AppCompatActivity(),
         navigation?.setOnNavigationItemSelectedListener {
             val id = it.itemId
             when (id) {
-                R.id.action_discover -> showMainFragment(filmsFragment)
-                R.id.action_watchlist -> showMainFragment(watchListFragment)
-                R.id.action_trendinglist -> showMainFragment(trendingFragment)
-                R.id.action_search -> showMainFragment(searchFragment)
+                R.id.action_discover -> showMainFragment(fragments[FILMS_TAG]!!)
+                R.id.action_watchlist -> showMainFragment(fragments[WATCHLIST_TAG]!!)
+                R.id.action_trendinglist -> showMainFragment(fragments[TRENDING_TAG]!!)
+                R.id.action_search -> showMainFragment(fragments[SEARCH_TAG]!!)
 
                 }
-
             true
         }
 
@@ -68,35 +63,29 @@ class FilmsActivity : AppCompatActivity(),
 
 
     private fun setUpFragments() {
-        filmsFragment = FilmsFragment()
-        watchListFragment = WatchListFragment()
-        trendingFragment = TrendingFragment()
-        searchFragment = SearchFragment()
-        val fragments: Map<String, Fragment> = mapOf(
-            FILMS_TAG to filmsFragment,
-            WATCHLIST_TAG to watchListFragment,
-            TRENDING_TAG to trendingFragment,
-            SEARCH_TAG to searchFragment)
+        fragments= mutableMapOf(
+            FILMS_TAG to FilmsFragment(),
+            WATCHLIST_TAG to WatchListFragment(),
+            TRENDING_TAG to TrendingFragment(),
+            SEARCH_TAG to SearchFragment()
+        )
 
         supportFragmentManager.beginTransaction()
             .addFragmentsToContainer(R.id.container_list, fragments)
             .hideFragments(fragments.filter {it.key != FILMS_TAG}.values.toList())
             .commit()
 
-        activeFragement = filmsFragment
+        activeFragement = fragments[FILMS_TAG]!!
     }
 
     private fun restoreFragments(activeFragmentTag: String) {
-        filmsFragment = supportFragmentManager.findFragmentByTag(FILMS_TAG) as FilmsFragment
-        watchListFragment =  supportFragmentManager.findFragmentByTag(WATCHLIST_TAG) as WatchListFragment
-        trendingFragment = supportFragmentManager.findFragmentByTag(TRENDING_TAG) as TrendingFragment
+        fragments[FILMS_TAG]=supportFragmentManager.findFragmentByTag(FILMS_TAG) as FilmsFragment
+        fragments[WATCHLIST_TAG] =  supportFragmentManager.findFragmentByTag(WATCHLIST_TAG) as WatchListFragment
+        fragments[TRENDING_TAG] = supportFragmentManager.findFragmentByTag(TRENDING_TAG) as TrendingFragment
+        fragments[SEARCH_TAG] = supportFragmentManager.findFragmentByTag(SEARCH_TAG) as SearchFragment
 
-        activeFragement = when(activeFragmentTag){
-            WATCHLIST_TAG -> watchListFragment
-            FILMS_TAG -> filmsFragment
-            TRENDING_TAG -> trendingFragment
-            else -> return
-        }
+        activeFragement = fragments[activeFragmentTag]!!
+
     }
 
     override fun onItemClicked(film: Film) {
