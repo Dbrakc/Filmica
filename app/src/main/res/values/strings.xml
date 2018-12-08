@@ -9,6 +9,7 @@
     <string name="title_discover">Discover</string>
     <string name="title_watchlist">WatchList</string>
     <string name="title_share">Share film</string>
+    <string name="title_trendingList">Trending film</string>
     <string name="template_share">Let\'s watch %s, Movie DB rates it with %.1f/10</string>
 
 </resources>

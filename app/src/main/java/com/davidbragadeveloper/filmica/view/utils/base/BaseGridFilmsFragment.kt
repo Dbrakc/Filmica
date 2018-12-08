@@ -16,7 +16,7 @@ import com.davidbragadeveloper.filmica.view.utils.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.android.synthetic.main.layout_error.*
 
-abstract class BaseGridFilmsFragment : Fragment() {
+abstract class BaseGridFilmsFragment (val films: MutableList<Film>) : Fragment() {
 
     val list : RecyclerView by lazy {
         val instance =view!!.findViewById<RecyclerView>(R.id.recyclerList)
@@ -32,7 +32,7 @@ abstract class BaseGridFilmsFragment : Fragment() {
 
             this.listener.onItemClicked(it)
         }
-        instance.setFilms(FilmsRepo.films)
+        instance.setFilms(films)
         instance
     }
 

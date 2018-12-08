@@ -10,7 +10,7 @@ import com.davidbragadeveloper.filmica.data.FilmsRepo
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
 
 
-class FilmsFragment : BaseGridFilmsFragment(){
+class FilmsFragment : BaseGridFilmsFragment(FilmsRepo.films){
     override fun reload() {
         FilmsRepo.discoverFilms(context!!,onSuccess(),onError())
     }

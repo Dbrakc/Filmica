@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 object FilmsRepo{
     val films : MutableList<Film>  = mutableListOf()
+    val trendingFilms: MutableList<Film> = mutableListOf()
 
     @Volatile
     private var db : AppDatabase? = null
@@ -92,6 +93,37 @@ object FilmsRepo{
         }else {
             callbackSucces.invoke(films)
         }
+
+    }
+
+    fun trendingFilms(context: Context, callbackSucces: ((MutableList<Film>)->Unit), callbackError: ((VolleyError)->Unit)){
+        if(trendingFilms.isEmpty()) {
+            requestTrendingFilms(callbackSucces, callbackError, context)
+        }else {
+            callbackSucces.invoke(trendingFilms)
+        }
+
+    }
+
+    private fun requestTrendingFilms(
+        callbackSucces: (MutableList<Film>) -> Unit,
+        callbackError: (VolleyError) -> Unit,
+        context: Context)
+    {
+        val url = ApiRoutes.trendingURL()
+        val request = JsonObjectRequest(Request.Method.GET, url, null,
+            {
+                trendingFilms.addAll(
+                    Film.parseFilms(
+                        it
+                    )
+                )
+                callbackSucces(trendingFilms)
+            },
+            {
+                callbackError.invoke(it)
+            })
+        Volley.newRequestQueue(context).add(request)
 
     }
 

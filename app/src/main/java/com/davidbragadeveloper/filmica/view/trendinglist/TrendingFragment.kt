@@ -9,8 +9,8 @@ import com.davidbragadeveloper.filmica.data.FilmsRepo
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
 
 
-class TrendingFragment : BaseGridFilmsFragment(){
+class TrendingFragment : BaseGridFilmsFragment(FilmsRepo.trendingFilms){
     override fun reload() {
-        FilmsRepo.dummyFilms()
+        FilmsRepo.trendingFilms(context!!, onSuccess(),onError())
     }
 }

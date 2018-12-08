@@ -25,4 +25,13 @@ object ApiRoutes {
         .authority("api.themoviedb.org")
         .appendPath("3")
         .appendQueryParameter("api_key", BuildConfig.MovieDBApiKey)
+
+    fun trendingURL(timeWindow: String = "Week"): String {
+        return getUriBuilder()
+            .appendPath("trending")
+            .appendPath("movie")
+            .appendPath(timeWindow)
+            .build()
+            .toString()
+    }
 }
