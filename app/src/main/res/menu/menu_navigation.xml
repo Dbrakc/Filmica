@@ -11,7 +11,7 @@
         android:title="@string/title_watchlist"/>
 
     <item android:id="@+id/action_trendinglist"
-        android:icon="@drawable/ic_watchlist"
+        android:icon="@drawable/ic_trending"
         android:title="@string/title_trendingList"/>
 
 </menu>
