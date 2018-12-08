@@ -6,19 +6,14 @@ import android.support.v4.app.Fragment
 import android.view.*
 
 import com.davidbragadeveloper.filmica.R
+import com.davidbragadeveloper.filmica.data.FilmsRepo
+import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseGridFilmsFragment (FilmsRepo.searchedFilms) {
+    override fun reload() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
     }
-
-
 
 
 }

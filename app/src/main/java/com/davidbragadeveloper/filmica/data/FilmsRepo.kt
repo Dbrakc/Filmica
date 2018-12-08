@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 object FilmsRepo{
     val films : MutableList<Film>  = mutableListOf()
     val trendingFilms: MutableList<Film> = mutableListOf()
+    val searchedFilms: MutableList<Film> = mutableListOf()
 
     @Volatile
     private var db : AppDatabase? = null
