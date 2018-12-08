@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Filmica</string>
+    <string name="label_add">Add to watch list</string>
+    <string name="title_genre">Genre</string>
+    <string name="title_release">Release</string>
+    <string name="lable_overview">Overview</string>
+    <string name="connection_error_text">Upps, something bad happens, please try again</string>
+    <string name="label_retry">Try againg!!</string>
+    <string name="title_discover">Discover</string>
+    <string name="title_watchlist">WatchList</string>
+    <string name="title_share">Share film</string>
+    <string name="template_share">Let\'s watch %s, Movie DB rates it with %.1f/10</string>
+
+</resources>
