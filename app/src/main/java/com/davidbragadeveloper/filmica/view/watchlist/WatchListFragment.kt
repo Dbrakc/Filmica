@@ -1,7 +1,6 @@
 package com.davidbragadeveloper.filmica.view.watchlist
 
 
-import android.arch.lifecycle.ReportFragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -11,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.davidbragadeveloper.filmica.R
-import com.davidbragadeveloper.filmica.data.FilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
 import com.davidbragadeveloper.filmica.view.utils.SwipeToDeleteCallback
 
 import kotlinx.android.synthetic.main.fragment_watch_list.*
@@ -38,7 +37,7 @@ class WatchListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        FilmsRepo.watchList(context!!){
+        DiscoverFilmsRepo.watchList(context!!){
             adapter.setFilms(it.toMutableList())
         }
     }
@@ -56,7 +55,7 @@ class WatchListFragment : Fragment() {
 
     private fun deleteFilmAt(position: Int) {
         val film = adapter.getFilm(position)
-        FilmsRepo.deleteFilm(context!!,film){
+        DiscoverFilmsRepo.deleteFilm(context!!,film){
             adapter.removeFilmAt(position)
         }
 

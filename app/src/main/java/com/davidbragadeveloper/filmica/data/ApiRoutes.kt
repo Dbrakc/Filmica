@@ -15,7 +15,7 @@ object ApiRoutes {
             .appendQueryParameter("sort_by",sortedBy)
             .appendQueryParameter("page",page.toString())
             .appendQueryParameter("include_adult","false")
-            .appendQueryParameter("include_vide","false")
+            .appendQueryParameter("include_video","false")
             .build()
             .toString()
     }
@@ -33,5 +33,21 @@ object ApiRoutes {
             .appendPath(timeWindow)
             .build()
             .toString()
+    }
+
+    fun searchedURL(
+        query: String,
+        language: String = "en-US",
+        page: Int = 1
+    ): String {
+        return getUriBuilder()
+            .appendPath("search")
+            .appendPath("movie")
+            .appendQueryParameter("language", language)
+            .appendQueryParameter("query", query)
+            .appendQueryParameter("page", page.toString())
+            .appendQueryParameter("include_adult","false")
+            .build().toString()
+
     }
 }

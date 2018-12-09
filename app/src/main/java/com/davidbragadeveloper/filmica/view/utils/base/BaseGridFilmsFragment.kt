@@ -10,13 +10,14 @@ import android.view.ViewGroup
 import com.android.volley.VolleyError
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
-import com.davidbragadeveloper.filmica.data.FilmsRepo
 import com.davidbragadeveloper.filmica.view.films.FilmsAdapter
 import com.davidbragadeveloper.filmica.view.utils.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.android.synthetic.main.layout_error.*
 
-abstract class BaseGridFilmsFragment (val films: MutableList<Film>) : Fragment() {
+abstract class BaseGridFilmsFragment (
+    val films: MutableList<Film>
+) : Fragment() {
 
     val list : RecyclerView by lazy {
         val instance =view!!.findViewById<RecyclerView>(R.id.recyclerList)
@@ -63,27 +64,17 @@ abstract class BaseGridFilmsFragment (val films: MutableList<Film>) : Fragment()
 
     abstract fun reload()
 
-    protected fun onError(): (VolleyError) -> Unit {
-        return {
-            progress?.visibility = View.INVISIBLE
-            list.visibility = View.INVISIBLE
-            layoutError?.visibility = View.VISIBLE
-            it.printStackTrace()
-        }
-    }
+    abstract fun onError(): (VolleyError) -> Unit
 
-    protected fun onSuccess(): (MutableList<Film>) -> Unit {
-        return {
-            progress?.visibility = View.INVISIBLE
-            list.visibility = View.VISIBLE
-            layoutError?.visibility = View.INVISIBLE
-            adapter.setFilms(it)
-        }
-    }
+    abstract fun onSuccess(): (MutableList<Film>) -> Unit
 
     interface OnItemClickListener {
 
         fun onItemClicked (film: Film)
+    }
+
+    protected fun makeInvisible(list: List<View>){
+        list.forEach { it.visibility = View.INVISIBLE }
     }
 
 

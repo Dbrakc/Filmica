@@ -12,25 +12,37 @@ import android.view.*
 import android.widget.Toast
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
-import com.davidbragadeveloper.filmica.data.FilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.BaseFilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.SearchFilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.TrendingFilmsRepo
+import com.davidbragadeveloper.filmica.view.films.FILMS_TAG
+import com.davidbragadeveloper.filmica.view.films.SEARCH_TAG
+import com.davidbragadeveloper.filmica.view.films.TRENDING_TAG
+import com.davidbragadeveloper.filmica.view.films.WATCHLIST_TAG
 import com.davidbragadeveloper.filmica.view.utils.SimpleTarget
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
-import kotlinx.android.synthetic.main.item_film.view.*
+
 
 class DetailsFragment : Fragment () {
 
+
     companion object {
-        fun newInstance (id: String) : DetailsFragment {
+        fun newInstance (id: String, strategy: String) : DetailsFragment {
             val instance = DetailsFragment()
             val args = Bundle ()
             args.putString("id", id)
+            args.putSerializable("strategy", strategy)
             instance.arguments = args
 
             return instance
         }
     }
 
+
+
+    private lateinit var repo: BaseFilmsRepo
     private var film: Film? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,8 +78,13 @@ class DetailsFragment : Fragment () {
         super.onViewCreated(view, savedInstanceState)
 
         val id = arguments?.getString("id") ?: ""
+        when(arguments?.getString("strategy", "")){
+            FILMS_TAG -> repo = DiscoverFilmsRepo
+            SEARCH_TAG-> repo = SearchFilmsRepo
+            TRENDING_TAG-> repo = TrendingFilmsRepo
+        }
 
-        film = FilmsRepo.findFilmById(id)
+        film = repo.findFilmById(id)
 
         film?.let {
             with(it) {
@@ -82,7 +99,7 @@ class DetailsFragment : Fragment () {
 
         addButton.setOnClickListener{
             film?.let {
-                FilmsRepo.saveFilm(context!!, it){
+                repo.saveFilm(context!!, it){
                     Toast.makeText(context, "Added to List", Toast.LENGTH_LONG).show()
                 }
             }

@@ -26,16 +26,25 @@ data class Film (@PrimaryKey val id: String = UUID.randomUUID().toString(),
     }
 
     companion object {
-        fun parseFilms (response: JSONObject) : MutableList<Film> {
+        fun parseFilms (response: JSONObject, customLength: Int = -1) : MutableList<Film> {
             val films = mutableListOf<Film>()
             val filmsArray = response.getJSONArray("results")
 
-            for ( i in 0..(filmsArray.length()-1)) {
-                films.add(parseFilm(filmsArray.getJSONObject(i)))
+            if(filmsArray.length()!=0) {
+                for (i in 0..getLength(customLength, filmsArray)) {
+                    films.add(parseFilm(filmsArray.getJSONObject(i)))
+                }
             }
-
             return films
+
         }
+
+        fun getLength(customLength: Int, filmsArray: JSONArray) =
+            if (customLength == -1 || filmsArray.length()<customLength) {
+                filmsArray.length() - 1
+            } else {
+                customLength - 1
+            }
 
         fun parseFilm(jsonFilm: JSONObject): Film {
 
@@ -54,13 +63,17 @@ data class Film (@PrimaryKey val id: String = UUID.randomUUID().toString(),
 
         private fun parseGenres ( genresArray: JSONArray): String {
             val genres = mutableListOf<String>()
-            for (i in 0..(genresArray.length()-1)){
-                val genreId = genresArray.get(i)
-                val genre = ApiConstants.genres[genreId] ?: ""
-                genres.add(genre)
-            }
+            var result : String? = null
+            if(genresArray.length()>0) {
+                for (i in 0..(genresArray.length() - 1)) {
+                    val genreId = genresArray.get(i)
+                    val genre = ApiConstants.genres[genreId] ?: ""
+                    genres.add(genre)
+                }
 
-            return genres.reduce{ acc, genre ->  "$acc | $genre"  }
+                 result = genres.reduce { acc, genre -> "$acc | $genre" }
+            }
+            return result ?: ""
         }
     }
 

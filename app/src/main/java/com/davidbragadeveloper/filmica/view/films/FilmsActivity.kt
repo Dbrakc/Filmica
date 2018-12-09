@@ -7,8 +7,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.widget.SearchView
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
@@ -16,7 +14,6 @@ import com.davidbragadeveloper.filmica.view.details.DetailsActivity
 import com.davidbragadeveloper.filmica.view.details.DetailsFragment
 import com.davidbragadeveloper.filmica.view.search.SearchFragment
 import com.davidbragadeveloper.filmica.view.trendinglist.TrendingFragment
-import com.davidbragadeveloper.filmica.view.utils.QueryTextChangeListener
 import com.davidbragadeveloper.filmica.view.utils.addFragmentsToContainer
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
 import com.davidbragadeveloper.filmica.view.utils.hideFragments
@@ -34,7 +31,9 @@ class FilmsActivity : AppCompatActivity(),
 
     private var fragments : MutableMap<String, Fragment> = mutableMapOf()
     private lateinit var activeFragement : Fragment
+    private var currentTag : String = FILMS_TAG
     private var menu : Menu? = null
+    private lateinit var queryListener: OnQueryTextChangeListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +47,8 @@ class FilmsActivity : AppCompatActivity(),
             restoreFragments(activeTag)
         }
 
+
+
         navigation?.setOnNavigationItemSelectedListener {
             val id = it.itemId
             var tag : String? = null
@@ -58,12 +59,13 @@ class FilmsActivity : AppCompatActivity(),
                 R.id.action_search -> tag = SEARCH_TAG
             }
 
-            showMainFragment(fragments[tag ?: FILMS_TAG]!!)
+            currentTag = tag!!
+            showMainFragment(fragments[currentTag]!!)
             menu?.let{
                 val menuItem = it.findItem(R.id.search_menu)
-                menuItem.isVisible = tag == SEARCH_TAG
+                menuItem.isVisible = currentTag == SEARCH_TAG
                 val searchView = menuItem.actionView as SearchView
-                searchView.setOnQueryTextListener(QueryTextChangeListener())
+                searchView.setOnQueryTextListener(queryListener)
             }
             true
         }
@@ -78,6 +80,10 @@ class FilmsActivity : AppCompatActivity(),
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         super.onPrepareOptionsMenu(menu)
         this.menu = menu
+        menu?.let {
+            val menuItem = it.findItem(R.id.search_menu)
+            menuItem.isVisible = currentTag == SEARCH_TAG
+        }
         return true
     }
 
@@ -85,6 +91,15 @@ class FilmsActivity : AppCompatActivity(),
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("active", activeFragement.tag)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if ( fragments[SEARCH_TAG] is OnQueryTextChangeListener) {
+            queryListener = fragments[SEARCH_TAG] as OnQueryTextChangeListener
+        }
+
     }
 
 
@@ -101,6 +116,7 @@ class FilmsActivity : AppCompatActivity(),
             .hideFragments(fragments.filter {it.key != FILMS_TAG}.values.toList())
             .commit()
 
+
         activeFragement = fragments[FILMS_TAG]!!
 
     }
@@ -112,7 +128,7 @@ class FilmsActivity : AppCompatActivity(),
         fragments[SEARCH_TAG] = supportFragmentManager.findFragmentByTag(SEARCH_TAG) as SearchFragment
 
 
-
+        currentTag = activeFragmentTag
         activeFragement = fragments[activeFragmentTag]!!
 
     }
@@ -148,14 +164,24 @@ class FilmsActivity : AppCompatActivity(),
     private fun launchDetailsActivity(id: String) {
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra("id", id)
+        intent.putExtra("strategy",currentTag)
         startActivity(intent)
     }
 
     private fun showDetailsFragment(id: String) {
-         val detailsFragment = DetailsFragment.newInstance(id)
+         val detailsFragment = DetailsFragment.newInstance(id, currentTag)
         supportFragmentManager.beginTransaction()
             .replace(R.id.containerDetails, detailsFragment)
             .commit()
+    }
+
+    interface OnQueryTextChangeListener : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean
+
     }
 
 }

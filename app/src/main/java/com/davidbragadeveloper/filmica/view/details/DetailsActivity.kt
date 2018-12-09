@@ -12,9 +12,10 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         val id = intent.getStringExtra("id")
+        val strategy = intent.getStringExtra("strategy")
 
         if(savedInstanceState == null) {
-            val detailsFragment = DetailsFragment.newInstance(id)
+            val detailsFragment = DetailsFragment.newInstance(id,strategy)
             supportFragmentManager.beginTransaction()
                 .add(R.id.containerDetails, detailsFragment)
                 .commit()
