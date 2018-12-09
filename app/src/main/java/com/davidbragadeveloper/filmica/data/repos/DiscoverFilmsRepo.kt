@@ -47,4 +47,9 @@ object DiscoverFilmsRepo : BaseFilmsRepo() {
         Volley.newRequestQueue(context).add(request)
 
     }
+
+    override fun findFilmById(context: Context, id: String, callbackSuccess: (Film) -> Unit) {
+        val film = films.find { it.id==id }
+        film?.let { callbackSuccess (it) }
+    }
 }

@@ -8,14 +8,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
-import com.davidbragadeveloper.filmica.data.repos.BaseFilmsRepo
-import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
-import com.davidbragadeveloper.filmica.data.repos.SearchFilmsRepo
-import com.davidbragadeveloper.filmica.data.repos.TrendingFilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.*
 import com.davidbragadeveloper.filmica.view.films.FILMS_TAG
 import com.davidbragadeveloper.filmica.view.films.SEARCH_TAG
 import com.davidbragadeveloper.filmica.view.films.TRENDING_TAG
@@ -82,30 +80,32 @@ class DetailsFragment : Fragment () {
             FILMS_TAG -> repo = DiscoverFilmsRepo
             SEARCH_TAG-> repo = SearchFilmsRepo
             TRENDING_TAG-> repo = TrendingFilmsRepo
+            WATCHLIST_TAG-> repo = WatchListRepo
         }
 
-        film = repo.findFilmById(id)
+        repo.findFilmById(
+            context = context!!,
+            id = id){film ->
 
-        film?.let {
-            with(it) {
+            with(film) {
                 titleLabel.text = title
                 overviewLabel.text = overview
                 genreLabel.text = genre
                 releaseLabel.text = release
                 loadImage(this)
             }
-        }
 
 
-        addButton.setOnClickListener{
-            film?.let {
-                repo.saveFilm(context!!, it){
+            addButton.setOnClickListener{
+                repo.saveFilm(context!!, film){
                     Toast.makeText(context, "Added to List", Toast.LENGTH_LONG).show()
                 }
             }
+
         }
 
     }
+
     private fun loadImage(film: Film) {
         val target = SimpleTarget (successCallback = {bitmap, from ->
             imgPoster.setImageBitmap(bitmap)

@@ -66,4 +66,11 @@ object SearchFilmsRepo : BaseFilmsRepo() {
 
 
     }
+
+    override fun findFilmById(context: Context, id: String, callbackSuccess: (Film) -> Unit) {
+        val film = films.find { it.id==id }
+        film?.let {
+            callbackSuccess(it)
+        }
+    }
 }

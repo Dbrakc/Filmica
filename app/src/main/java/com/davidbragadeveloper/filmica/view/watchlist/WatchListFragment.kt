@@ -1,6 +1,7 @@
 package com.davidbragadeveloper.filmica.view.watchlist
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -11,15 +12,23 @@ import android.view.ViewGroup
 
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
+import com.davidbragadeveloper.filmica.data.repos.WatchListRepo
 import com.davidbragadeveloper.filmica.view.utils.SwipeToDeleteCallback
+import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
 
 import kotlinx.android.synthetic.main.fragment_watch_list.*
 
 class WatchListFragment : Fragment() {
 
+    lateinit var listener: BaseGridFilmsFragment.OnItemClickListener
+
     val adapter : WatchListAdapter by lazy {
-        WatchListAdapter()
+        WatchListAdapter{
+            listener.onItemClicked(it)
+        }
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +46,20 @@ class WatchListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        DiscoverFilmsRepo.watchList(context!!){
+        WatchListRepo.watchList(context!!){
             adapter.setFilms(it.toMutableList())
         }
     }
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is BaseGridFilmsFragment.OnItemClickListener){
+            listener=context
+        }
+    }
+
+
 
     private fun setUpSwipeHandler(){
         val swipeHandler = object: SwipeToDeleteCallback() {
@@ -55,7 +74,7 @@ class WatchListFragment : Fragment() {
 
     private fun deleteFilmAt(position: Int) {
         val film = adapter.getFilm(position)
-        DiscoverFilmsRepo.deleteFilm(context!!,film){
+        WatchListRepo.deleteFilm(context!!,film){
             adapter.removeFilmAt(position)
         }
 

@@ -68,10 +68,7 @@ abstract class BaseGridFilmsFragment (
 
     abstract fun onSuccess(): (MutableList<Film>) -> Unit
 
-    interface OnItemClickListener {
-
-        fun onItemClicked (film: Film)
-    }
+    interface OnItemClickListener { fun onItemClicked (film: Film) }
 
     protected fun makeInvisible(list: List<View>){
         list.forEach { it.visibility = View.INVISIBLE }

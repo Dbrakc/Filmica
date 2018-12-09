@@ -16,7 +16,7 @@ abstract class BaseFilmsRepo {
     @Volatile
     private var db : AppDatabase? = null
 
-    private fun getDbInstance (context: Context): AppDatabase {
+    protected fun getDbInstance (context: Context): AppDatabase {
         if(db ==null) {
            db = Room.databaseBuilder(context, AppDatabase::class.java, "filmica-db").build()
         }
@@ -37,9 +37,13 @@ abstract class BaseFilmsRepo {
     }
 
 
-    fun findFilmById(id: String): Film? {
-        return films.find { it.id==id }
-    }
+    abstract fun findFilmById(
+        context: Context,
+        id: String,
+        callbackSuccess: (Film) -> Unit
+    )
+
+
 
     fun saveFilm (
         context: Context,
@@ -54,36 +58,7 @@ abstract class BaseFilmsRepo {
         }
     }
 
-    fun watchList (
-        context: Context,
-        callbackSuccess: (List<Film>) -> Unit)
-    {
-        GlobalScope.launch(Dispatchers.Main){
-            val async = async (Dispatchers.IO){
-               getDbInstance(context).filmDao().getFilms()
-            }
 
-            val films = async.await()
-            callbackSuccess.invoke(films)
-        }
-
-    }
-
-    fun deleteFilm (
-        context: Context,
-        film: Film,
-        callbackSuccess: (Film) -> Unit
-    ){
-        GlobalScope.launch(Dispatchers.Main) {
-            val async = async(Dispatchers.IO){
-               getDbInstance(context).filmDao().deleteFilm(film)
-            }
-
-            async.await()
-            callbackSuccess.invoke(film)
-
-        }
-    }
 
 
 

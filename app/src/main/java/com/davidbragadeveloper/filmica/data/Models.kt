@@ -21,6 +21,10 @@ data class Film (@PrimaryKey val id: String = UUID.randomUUID().toString(),
     @Ignore
     constructor(): this( "")
 
+    fun getBasePosterURL():String{
+        return BASE_POSTER_URL
+    }
+
     fun getPosterURL():String{
         return "$BASE_POSTER_URL$poster"
     }
