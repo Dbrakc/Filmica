@@ -58,6 +58,22 @@ abstract class BaseFilmsRepo {
         }
     }
 
+    fun deleteFilm (
+        context: Context,
+        film: Film,
+        callbackSuccess: (Film) -> Unit
+    ){
+        GlobalScope.launch(Dispatchers.Main) {
+            val async = async(Dispatchers.IO){
+                WatchListRepo.getDbInstance(context).filmDao().deleteFilm(film)
+            }
+
+            async.await()
+            callbackSuccess.invoke(film)
+
+        }
+    }
+
 
 
 

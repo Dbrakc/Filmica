@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
@@ -96,9 +97,16 @@ class DetailsFragment : Fragment () {
             }
 
 
-            addButton.setOnClickListener{
-                repo.saveFilm(context!!, film){
-                    Toast.makeText(context, "Added to List", Toast.LENGTH_LONG).show()
+            addButton.setOnClickListener{ view ->
+                val context = context!!
+                repo.saveFilm(context, film){ film ->
+                    Snackbar.make(view,R.string.label_add,Snackbar.LENGTH_LONG)
+                        .setAction("Undo save"){
+                            repo.deleteFilm(context,film){
+                                Toast.makeText(context,"Film not saved", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        .show()
                 }
             }
 

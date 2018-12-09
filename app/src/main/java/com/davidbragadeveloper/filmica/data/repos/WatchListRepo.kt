@@ -25,21 +25,6 @@ object WatchListRepo: BaseFilmsRepo() {
 
     }
 
-    fun deleteFilm (
-        context: Context,
-        film: Film,
-        callbackSuccess: (Film) -> Unit
-    ){
-        GlobalScope.launch(Dispatchers.Main) {
-            val async = async(Dispatchers.IO){
-                getDbInstance(context).filmDao().deleteFilm(film)
-            }
-
-            async.await()
-            callbackSuccess.invoke(film)
-
-        }
-    }
 
     override fun findFilmById(
         context: Context,
