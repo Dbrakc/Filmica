@@ -15,7 +15,7 @@
         android:title="@string/title_trendingList"/>
 
     <item android:id="@+id/action_search"
-        android:icon="@drawable/ic_trending"
+        android:icon="@drawable/ic_search"
         android:title="@string/title_search"/>
 
 </menu>
