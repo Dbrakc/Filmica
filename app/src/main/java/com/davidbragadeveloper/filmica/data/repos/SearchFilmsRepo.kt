@@ -1,12 +1,11 @@
 package com.davidbragadeveloper.filmica.data.repos
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.davidbragadeveloper.filmica.data.ApiRoutes
+import com.davidbragadeveloper.filmica.data.api.ApiRoutes
 import com.davidbragadeveloper.filmica.data.Film
 
 object SearchFilmsRepo : BaseFilmsRepo() {
@@ -47,7 +46,6 @@ object SearchFilmsRepo : BaseFilmsRepo() {
     )
     {
         val url = ApiRoutes.searchedURL(query = query, page = page)
-        Log.d("kkk", url)
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             {
@@ -68,8 +66,6 @@ object SearchFilmsRepo : BaseFilmsRepo() {
             })
 
         Volley.newRequestQueue(context).add(request)
-
-
     }
 
     override fun findFilmById(context: Context, id: String, callbackSuccess: (Film) -> Unit) {

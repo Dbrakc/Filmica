@@ -13,12 +13,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import com.davidbragadeveloper.filmica.R
-import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
 import com.davidbragadeveloper.filmica.data.repos.WatchListRepo
-import com.davidbragadeveloper.filmica.view.films.FilmsActivity
 import com.davidbragadeveloper.filmica.view.utils.SwipeToDeleteCallback
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
-import com.davidbragadeveloper.filmica.view.utils.makeInvisible
 
 
 import kotlinx.android.synthetic.main.fragment_watch_list.*

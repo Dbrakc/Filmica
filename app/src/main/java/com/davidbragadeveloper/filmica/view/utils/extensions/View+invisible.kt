@@ -1,4 +1,4 @@
-package com.davidbragadeveloper.filmica.view.utils
+package com.davidbragadeveloper.filmica.view.utils.extensions
 
 import android.view.View
 

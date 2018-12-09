@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import com.davidbragadeveloper.filmica.data.api.ApiConstants
+import com.davidbragadeveloper.filmica.data.api.BASE_POSTER_URL
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*

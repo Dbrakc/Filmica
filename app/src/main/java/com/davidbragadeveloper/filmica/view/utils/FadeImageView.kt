@@ -3,8 +3,8 @@ package com.davidbragadeveloper.filmica.view.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.AttributeSet
-import android.view.View
 import android.widget.ImageView
+import com.davidbragadeveloper.filmica.view.utils.listeners.AnimatorEndListener
 
 class FadeImageView : ImageView {
     constructor(context: Context?) : super(context)
@@ -16,7 +16,7 @@ class FadeImageView : ImageView {
         animate()
             .alpha(0F)
             .setDuration(150)
-            .setListener(AnimatorEndListener(){
+            .setListener(AnimatorEndListener() {
                 super@FadeImageView.setImageBitmap(bm)
                 animate()
                     .alpha(1F)

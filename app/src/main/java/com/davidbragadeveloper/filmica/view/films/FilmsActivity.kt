@@ -14,9 +14,9 @@ import com.davidbragadeveloper.filmica.view.details.DetailsActivity
 import com.davidbragadeveloper.filmica.view.details.DetailsFragment
 import com.davidbragadeveloper.filmica.view.search.SearchFragment
 import com.davidbragadeveloper.filmica.view.trendinglist.TrendingFragment
-import com.davidbragadeveloper.filmica.view.utils.addFragmentsToContainer
+import com.davidbragadeveloper.filmica.view.utils.extensions.addFragmentsToContainer
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
-import com.davidbragadeveloper.filmica.view.utils.hideFragments
+import com.davidbragadeveloper.filmica.view.utils.extensions.hideFragments
 import com.davidbragadeveloper.filmica.view.watchlist.WatchListFragment
 import kotlinx.android.synthetic.main.activity_films.*
 
@@ -46,7 +46,6 @@ class FilmsActivity : AppCompatActivity(),
             val activeTag = savedInstanceState.getString("active", FILMS_TAG)
             restoreFragments(activeTag)
         }
-
 
 
         navigation?.setOnNavigationItemSelectedListener {
@@ -126,7 +125,7 @@ class FilmsActivity : AppCompatActivity(),
     }
 
     private fun restoreFragments(activeFragmentTag: String) {
-        fragments[FILMS_TAG]=supportFragmentManager.findFragmentByTag(FILMS_TAG) as FilmsFragment
+        fragments[FILMS_TAG]= supportFragmentManager.findFragmentByTag(FILMS_TAG) as FilmsFragment
         fragments[WATCHLIST_TAG] =  supportFragmentManager.findFragmentByTag(WATCHLIST_TAG) as WatchListFragment
         fragments[TRENDING_TAG] = supportFragmentManager.findFragmentByTag(TRENDING_TAG) as TrendingFragment
         fragments[SEARCH_TAG] = supportFragmentManager.findFragmentByTag(SEARCH_TAG) as SearchFragment
@@ -150,7 +149,7 @@ class FilmsActivity : AppCompatActivity(),
             launchDetailsActivity(id)
         }
 
-        }
+    }
 
     private fun showMainFragment(fragment: Fragment) {
         if(fragment is WatchListFragment){

@@ -5,11 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
-import android.util.Log
 import android.view.View
 import com.davidbragadeveloper.filmica.R
-import com.davidbragadeveloper.filmica.data.ApiConstants
-import com.davidbragadeveloper.filmica.data.BASE_POSTER_URL
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.view.utils.base.BaseFilmAdapter
 import com.davidbragadeveloper.filmica.view.utils.base.BaseFilmHolder
@@ -39,10 +36,8 @@ class WatchListAdapter(itemClickListener: ((Film)->Unit)? = null):
 
         private fun loadImage(film: Film) {
             val target = SimpleTarget (successCallback = {bitmap, from ->
-
                 itemView.imgPoster.setImageBitmap(bitmap)
                 setColorFrom(bitmap)
-
 
             })
             itemView.imgPoster.tag = target

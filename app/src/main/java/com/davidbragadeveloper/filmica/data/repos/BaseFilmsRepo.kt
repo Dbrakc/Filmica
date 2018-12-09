@@ -2,14 +2,31 @@ package com.davidbragadeveloper.filmica.data.repos
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.davidbragadeveloper.filmica.data.AppDatabase
+import com.davidbragadeveloper.filmica.data.db.AppDatabase
 import com.davidbragadeveloper.filmica.data.Film
+import com.davidbragadeveloper.filmica.view.films.FILMS_TAG
+import com.davidbragadeveloper.filmica.view.films.SEARCH_TAG
+import com.davidbragadeveloper.filmica.view.films.TRENDING_TAG
+import com.davidbragadeveloper.filmica.view.films.WATCHLIST_TAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 abstract class BaseFilmsRepo {
+
+    companion object {
+        public fun getRepoWithStrategy(strategyTag: String): BaseFilmsRepo{
+            var repo : BaseFilmsRepo? = null
+            when(strategyTag){
+                FILMS_TAG -> repo = DiscoverFilmsRepo
+                SEARCH_TAG -> repo = SearchFilmsRepo
+                TRENDING_TAG -> repo =  TrendingFilmsRepo
+                WATCHLIST_TAG -> repo = WatchListRepo
+            }
+            return repo ?: DiscoverFilmsRepo
+        }
+    }
 
     val films : MutableList<Film>  = mutableListOf()
 
@@ -23,6 +40,8 @@ abstract class BaseFilmsRepo {
 
         return db as AppDatabase
     }
+
+
 
     fun dummyFilms(): List<Film>{
         return (0..9).map{
@@ -67,7 +86,6 @@ abstract class BaseFilmsRepo {
             val async = async(Dispatchers.IO){
                 WatchListRepo.getDbInstance(context).filmDao().deleteFilm(film)
             }
-
             async.await()
             callbackSuccess.invoke(film)
 

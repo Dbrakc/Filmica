@@ -1,10 +1,8 @@
-package com.davidbragadeveloper.filmica.view.utils
+package com.davidbragadeveloper.filmica.view.utils.listeners
 
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
-abstract class BaseRecyclerViewScrollListener (
+abstract class BasePaginatorRecyclerScrollListener (
     val layoutManager: RecyclerView.LayoutManager,
     val lastVisibleItemPositionCallback: ()->Int,
     val onLoadMoreCallback : (Int) -> Unit
@@ -42,38 +40,3 @@ abstract class BaseRecyclerViewScrollListener (
         this.loading = true
     }
 }
-
-class GridRecyclerViewScrollListener (
-    gridLayoutManager: GridLayoutManager,
-    onLoadMoreCallback: (Int) -> Unit
-): BaseRecyclerViewScrollListener(
-    layoutManager = gridLayoutManager,
-    lastVisibleItemPositionCallback = {
-        gridLayoutManager.findLastVisibleItemPosition()
-    },
-    onLoadMoreCallback = onLoadMoreCallback
-) {
-
-    init {
-        visibleItemsBeforeReloading * gridLayoutManager.spanCount
-    }
-
-}
-
-class LinearRecyclerViewScrollListener (
-    linearLayoutManager: LinearLayoutManager,
-    onLoadMoreCallback: (Int) -> Unit
-): BaseRecyclerViewScrollListener(
-    layoutManager = linearLayoutManager,
-    lastVisibleItemPositionCallback = {
-        linearLayoutManager.findLastVisibleItemPosition()
-    },
-    onLoadMoreCallback = onLoadMoreCallback
-)
-
-
-
-
-
-
-

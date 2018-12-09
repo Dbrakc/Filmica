@@ -1,20 +1,15 @@
 package com.davidbragadeveloper.filmica.view.search
 
 
-import android.app.ActionBar
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.android.volley.VolleyError
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.data.repos.SearchFilmsRepo
 import com.davidbragadeveloper.filmica.view.films.FilmsActivity
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
-import com.davidbragadeveloper.filmica.view.utils.makeInvisible
+import com.davidbragadeveloper.filmica.view.utils.extensions.makeInvisible
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.android.synthetic.main.layout_error.*
 import kotlinx.android.synthetic.main.layout_notify_joker.*

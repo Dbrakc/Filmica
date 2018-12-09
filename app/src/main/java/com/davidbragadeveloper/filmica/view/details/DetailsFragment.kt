@@ -9,16 +9,11 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.data.repos.*
-import com.davidbragadeveloper.filmica.view.films.FILMS_TAG
-import com.davidbragadeveloper.filmica.view.films.SEARCH_TAG
-import com.davidbragadeveloper.filmica.view.films.TRENDING_TAG
-import com.davidbragadeveloper.filmica.view.films.WATCHLIST_TAG
 import com.davidbragadeveloper.filmica.view.utils.SimpleTarget
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -76,23 +71,12 @@ class DetailsFragment : Fragment () {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Picasso.get()
-            .load(R.drawable.ic_movie)
-            .into(notifyJockerIcon)
-        notifyJockerLabel.text = getString(R.string.click_movie_details)
-        notifyJockerLabel.setTextColor(Color.WHITE)
-        notifyJockerLayout.visibility = View.VISIBLE
-        notifyJockerLayout.setBackgroundColor(ContextCompat.getColor(context!!,R.color.colorPrimary))
-        scrollView.visibility = View.INVISIBLE
-
+        setNotifyJockerLayout()
+        showNotifyJockerLayout()
 
         val id = arguments?.getString("id") ?: ""
-        when(arguments?.getString("strategy", "")){
-            FILMS_TAG -> repo = DiscoverFilmsRepo
-            SEARCH_TAG-> repo = SearchFilmsRepo
-            TRENDING_TAG-> repo = TrendingFilmsRepo
-            WATCHLIST_TAG-> repo = WatchListRepo
-        }
+
+        repo = BaseFilmsRepo.getRepoWithStrategy(arguments?.getString("strategy", "")?:"")
 
         repo.findFilmById(
             context = context!!,
@@ -108,23 +92,52 @@ class DetailsFragment : Fragment () {
                 loadImage(this)
             }
 
-
-            addButton.setOnClickListener{ view ->
-                val context = context!!
-                repo.saveFilm(context, film){ film ->
-                    Snackbar.make(view,R.string.label_add,Snackbar.LENGTH_LONG)
-                        .setAction(getString(R.string.undo_save)){
-                            repo.deleteFilm(context,film){
-                                Toast.makeText(context,getString(R.string.film_not_saved), Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        .show()
-                }
-            }
+            setOnClickListener(film)
 
         }
 
     }
+
+    private fun showNotifyJockerLayout() {
+        notifyJockerLayout.visibility = View.VISIBLE
+        scrollView.visibility = View.INVISIBLE
+    }
+
+    private fun setOnClickListener(film: Film) {
+        addButton.setOnClickListener { view ->
+            val context = context!!
+            repo.saveFilm(context, film) { film ->
+                Snackbar.make(view, R.string.label_add, Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.undo_save)) {
+                        repo.deleteFilm(context, film) {
+                            Toast.makeText(context, getString(R.string.film_not_saved), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    .show()
+            }
+        }
+    }
+
+
+    private fun setNotifyJockerLayout() {
+        loadNotifyJockerIcon()
+        setNotifyJockerLabel()
+        notifyJockerLayout.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+    }
+
+
+    private fun setNotifyJockerLabel() {
+        notifyJockerLabel.text = getString(R.string.click_movie_details)
+        notifyJockerLabel.setTextColor(Color.WHITE)
+    }
+
+    private fun loadNotifyJockerIcon() {
+        Picasso.get()
+            .load(R.drawable.ic_movie)
+            .into(notifyJockerIcon)
+    }
+
+    //Ends TODO
 
     private fun loadImage(film: Film) {
         val target = SimpleTarget (successCallback = {bitmap, from ->

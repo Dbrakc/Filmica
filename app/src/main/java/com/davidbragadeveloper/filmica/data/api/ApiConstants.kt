@@ -1,4 +1,4 @@
-package com.davidbragadeveloper.filmica.data
+package com.davidbragadeveloper.filmica.data.api
 
 const val BASE_POSTER_URL = "https://image.tmdb.org/t/p/w500"
 object ApiConstants {

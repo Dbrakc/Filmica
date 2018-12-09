@@ -1,12 +1,11 @@
 package com.davidbragadeveloper.filmica.data.repos
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.davidbragadeveloper.filmica.data.ApiRoutes
+import com.davidbragadeveloper.filmica.data.api.ApiRoutes
 import com.davidbragadeveloper.filmica.data.Film
 
 object DiscoverFilmsRepo : BaseFilmsRepo() {

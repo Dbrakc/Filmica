@@ -13,8 +13,8 @@ import com.android.volley.VolleyError
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.view.films.FilmsAdapter
-import com.davidbragadeveloper.filmica.view.utils.GridRecyclerViewScrollListener
 import com.davidbragadeveloper.filmica.view.utils.ItemOffsetDecoration
+import com.davidbragadeveloper.filmica.view.utils.listeners.GridPaginatorRecyclerScrollListener
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.android.synthetic.main.layout_error.*
 
@@ -27,7 +27,8 @@ abstract class BaseGridFilmsFragment (
         val instance =view!!.findViewById<RecyclerView>(R.id.recyclerList)
         instance.addItemDecoration(ItemOffsetDecoration(R.dimen.offset_grid))
         instance.setHasFixedSize(true)
-        instance.setOnScrollListener(GridRecyclerViewScrollListener(instance.layoutManager as GridLayoutManager){
+        instance
+            .setOnScrollListener(GridPaginatorRecyclerScrollListener(instance.layoutManager as GridLayoutManager){
             loadPage (it + 1)
         })
         instance
@@ -39,7 +40,6 @@ abstract class BaseGridFilmsFragment (
 
     val adapter: FilmsAdapter by lazy {
         val instance = FilmsAdapter {
-
             this.listener.onItemClicked(it)
         }
         instance.setFilms(films)
@@ -48,11 +48,9 @@ abstract class BaseGridFilmsFragment (
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-
         if(context is OnItemClickListener){
             listener = context
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -82,8 +80,6 @@ abstract class BaseGridFilmsFragment (
     abstract fun onSuccess(): (MutableList<Film>) -> Unit
 
     interface OnItemClickListener { fun onItemClicked (film: Film) }
-
-
 
 
 }

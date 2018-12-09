@@ -1,4 +1,4 @@
-package com.davidbragadeveloper.filmica.data
+package com.davidbragadeveloper.filmica.data.api
 
 import android.net.Uri
 import com.davidbragadeveloper.filmica.BuildConfig

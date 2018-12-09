@@ -1,6 +1,7 @@
-package com.davidbragadeveloper.filmica.data
+package com.davidbragadeveloper.filmica.data.db
 
 import android.arch.persistence.room.*
+import com.davidbragadeveloper.filmica.data.Film
 
 @Dao
 interface FilmDAO {
@@ -12,7 +13,7 @@ interface FilmDAO {
     fun getFilms():List<Film>
 
     @Query("SELECT * FROM film  WHERE id=:id")
-    fun findFilmBy(id: String):Film?
+    fun findFilmBy(id: String): Film?
 
     @Delete
     fun deleteFilm(film: Film)

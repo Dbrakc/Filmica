@@ -1,18 +1,13 @@
 package com.davidbragadeveloper.filmica.view.films
 
-import android.graphics.drawable.BitmapDrawable
-import android.os.Bundle
 import android.view.View
 import com.android.volley.VolleyError
-import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
-import com.davidbragadeveloper.filmica.view.utils.makeInvisible
-import com.squareup.picasso.Picasso
+import com.davidbragadeveloper.filmica.view.utils.extensions.makeInvisible
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.android.synthetic.main.layout_error.*
-import kotlinx.android.synthetic.main.layout_notify_joker.*
 
 
 class FilmsFragment : BaseGridFilmsFragment(DiscoverFilmsRepo.films){

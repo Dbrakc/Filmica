@@ -19,9 +19,7 @@ object WatchListRepo: BaseFilmsRepo() {
             val async = async (Dispatchers.IO){
                 getDbInstance(context).filmDao().getFilms()
             }
-
             val films = async.await()
-
             if(!films.isEmpty()) {
                 callbackSuccess.invoke(films)
             }else{
@@ -41,13 +39,10 @@ object WatchListRepo: BaseFilmsRepo() {
             val async = async(Dispatchers.IO){
                 getDbInstance(context).filmDao().findFilmBy(id)
             }
-
             val film = async.await()
-
             film?.let {
                 callbackSuccess.invoke(it)
             }
-
         }
 
     }

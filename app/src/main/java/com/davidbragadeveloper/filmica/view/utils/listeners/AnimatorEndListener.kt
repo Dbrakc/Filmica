@@ -1,4 +1,4 @@
-package com.davidbragadeveloper.filmica.view.utils
+package com.davidbragadeveloper.filmica.view.utils.listeners
 
 import android.animation.Animator
 
