@@ -1,6 +1,7 @@
 package com.davidbragadeveloper.filmica.data.repos
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -10,9 +11,15 @@ import com.davidbragadeveloper.filmica.data.Film
 
 object DiscoverFilmsRepo : BaseFilmsRepo() {
 
-    fun discoverFilms(context: Context, callbackSucces: ((MutableList<Film>)->Unit), callbackError: ((VolleyError)->Unit)){
-        if(films.isEmpty()) {
+    var lastPage = 1;
+
+    fun discoverFilms(context: Context,
+                      page: Int = 1,
+                      callbackSucces: ((MutableList<Film>)->Unit),
+                      callbackError: ((VolleyError)->Unit)){
+        if(films.isEmpty() || page > lastPage) {
             requestDiscoverFilms(
+                page,
                 callbackSucces,
                 callbackError,
                 context
@@ -21,15 +28,18 @@ object DiscoverFilmsRepo : BaseFilmsRepo() {
             callbackSucces.invoke(films)
         }
 
+        lastPage = page
+
     }
 
     private fun requestDiscoverFilms(
+        page: Int = 1,
         callbackSucces: (MutableList<Film>) -> Unit,
         callbackError: (VolleyError) -> Unit,
         context: Context
     ) {
 
-        val url = ApiRoutes.discoverURL()
+        val url = ApiRoutes.discoverURL(page = page)
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             {

@@ -1,6 +1,7 @@
 package com.davidbragadeveloper.filmica.data.repos
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -15,6 +16,7 @@ object SearchFilmsRepo : BaseFilmsRepo() {
     fun searchedFilms(
         context: Context,
         query: String,
+        page: Int = 1,
         callbackSucces: (MutableList<Film>)->Unit,
         callbackNoResults: ()->Unit,
         callbackError: (VolleyError)->Unit
@@ -25,6 +27,7 @@ object SearchFilmsRepo : BaseFilmsRepo() {
         }else {
             requestSearchedFilms(
                 query,
+                page,
                 callbackSucces,
                 callbackNoResults,
                 callbackError,
@@ -37,19 +40,21 @@ object SearchFilmsRepo : BaseFilmsRepo() {
 
     private fun requestSearchedFilms(
         query: String,
+        page: Int = 1,
         callbackSucces: (MutableList<Film>) -> Unit,
         callbackNoResults: () -> Unit,
         callbackError: (VolleyError) -> Unit, context: Context
     )
     {
-        val url = ApiRoutes.searchedURL(query = query)
+        val url = ApiRoutes.searchedURL(query = query, page = page)
+        Log.d("kkk", url)
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             {
                 films.clear()
                 films.addAll(
                     Film.parseFilms(
-                        it, 10
+                        it
                     )
                 )
                 if(!films.isEmpty()) {

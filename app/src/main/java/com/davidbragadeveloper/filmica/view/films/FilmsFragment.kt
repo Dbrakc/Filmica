@@ -16,11 +16,10 @@ import kotlinx.android.synthetic.main.layout_notify_joker.*
 
 
 class FilmsFragment : BaseGridFilmsFragment(DiscoverFilmsRepo.films){
-
-
-    override fun reload() {
-        DiscoverFilmsRepo.discoverFilms(context!!,onSuccess(),onError())
+    override fun loadPage(page: Int) {
+        DiscoverFilmsRepo.discoverFilms(context!!, page, onSuccess(),onError())
     }
+
 
     override fun onSuccess(): (MutableList<Film>) -> Unit {
         return {

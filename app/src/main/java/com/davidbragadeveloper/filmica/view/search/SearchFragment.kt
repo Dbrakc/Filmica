@@ -22,13 +22,29 @@ import kotlinx.android.synthetic.main.layout_notify_joker.*
 
 class SearchFragment : BaseGridFilmsFragment (SearchFilmsRepo.films), FilmsActivity.OnQueryTextChangeListener {
 
+    lateinit var currentQuery : String
+
+    override fun loadPage(page: Int) {
+        SearchFilmsRepo.searchedFilms(query = currentQuery,
+            context = context!!,
+            page = page,
+            callbackSucces = onSuccess(),
+            callbackNoResults = {
+                showLayoutNoResults()
+            },
+            callbackError = onError())
+    }
+
+
+
+    override fun reload(){}
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showLayoutNoResults()
     }
 
-    override fun reload(){}
 
     override fun onSuccess(): (MutableList<Film>) -> Unit {  return {
         this@SearchFragment.view?.makeInvisible(listOf(progress!!,layoutError,notifyJockerLayout))
@@ -46,6 +62,7 @@ class SearchFragment : BaseGridFilmsFragment (SearchFilmsRepo.films), FilmsActiv
 
     override fun onQueryTextChange(newText: String?): Boolean {
         newText?.let {
+            currentQuery = it
             if(it.length>=3) {
                 SearchFilmsRepo.searchedFilms(query = it,
                     context = context!!,
