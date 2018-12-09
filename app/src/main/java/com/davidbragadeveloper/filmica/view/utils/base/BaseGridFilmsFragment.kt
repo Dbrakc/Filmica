@@ -19,6 +19,7 @@ abstract class BaseGridFilmsFragment (
     val films: MutableList<Film>
 ) : Fragment() {
 
+
     val list : RecyclerView by lazy {
         val instance =view!!.findViewById<RecyclerView>(R.id.recyclerList)
         instance.addItemDecoration(ItemOffsetDecoration(R.dimen.offset_grid))
@@ -70,9 +71,7 @@ abstract class BaseGridFilmsFragment (
 
     interface OnItemClickListener { fun onItemClicked (film: Film) }
 
-    protected fun makeInvisible(list: List<View>){
-        list.forEach { it.visibility = View.INVISIBLE }
-    }
+
 
 
 }

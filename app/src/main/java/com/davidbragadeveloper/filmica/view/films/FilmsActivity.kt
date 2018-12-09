@@ -72,6 +72,7 @@ class FilmsActivity : AppCompatActivity(),
 
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_menu,menu)
         return super.onCreateOptionsMenu(menu)
@@ -98,6 +99,9 @@ class FilmsActivity : AppCompatActivity(),
 
         if ( fragments[SEARCH_TAG] is OnQueryTextChangeListener) {
             queryListener = fragments[SEARCH_TAG] as OnQueryTextChangeListener
+        }
+        if(isTablet()){
+            showDetails("-1")
         }
 
     }
@@ -149,6 +153,9 @@ class FilmsActivity : AppCompatActivity(),
         }
 
     private fun showMainFragment(fragment: Fragment) {
+        if(fragment is WatchListFragment){
+            fragment.onResume()
+        }
         supportFragmentManager.beginTransaction()
             .hide(activeFragement)
             .show(fragment)

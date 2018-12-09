@@ -22,6 +22,7 @@ import com.davidbragadeveloper.filmica.view.films.WATCHLIST_TAG
 import com.davidbragadeveloper.filmica.view.utils.SimpleTarget
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.layout_notify_joker.*
 
 
 class DetailsFragment : Fragment () {
@@ -62,7 +63,6 @@ class DetailsFragment : Fragment () {
         when(item?.itemId){
             R.id.action_share -> {
                 shareFilm()
-
             }
         }
 
@@ -76,6 +76,16 @@ class DetailsFragment : Fragment () {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Picasso.get()
+            .load(R.drawable.ic_movie)
+            .into(notifyJockerIcon)
+        notifyJockerLabel.text = getString(R.string.click_movie_details)
+        notifyJockerLabel.setTextColor(Color.WHITE)
+        notifyJockerLayout.visibility = View.VISIBLE
+        notifyJockerLayout.setBackgroundColor(ContextCompat.getColor(context!!,R.color.colorPrimary))
+        scrollView.visibility = View.INVISIBLE
+
+
         val id = arguments?.getString("id") ?: ""
         when(arguments?.getString("strategy", "")){
             FILMS_TAG -> repo = DiscoverFilmsRepo
@@ -87,6 +97,8 @@ class DetailsFragment : Fragment () {
         repo.findFilmById(
             context = context!!,
             id = id){film ->
+
+            showScrollView()
 
             with(film) {
                 titleLabel.text = title
@@ -152,6 +164,11 @@ class DetailsFragment : Fragment () {
         }
 
         startActivity(Intent.createChooser(intent, getString(R.string.title_share)))
+    }
+
+    protected fun showScrollView(){
+        notifyJockerLayout.visibility = View.INVISIBLE
+        scrollView.visibility = View.VISIBLE
 
     }
 

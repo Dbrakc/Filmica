@@ -15,7 +15,7 @@
     <include layout="@layout/layout_error"
         android:visibility="invisible"/>
 
-    <include layout = "@layout/layout_no_results"
+    <include layout = "@layout/layout_notify_joker"
         android:visibility="invisible"/>
 
     <android.support.v7.widget.RecyclerView

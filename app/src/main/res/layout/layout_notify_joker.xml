@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/layoutNoResults"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notifyJockerLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -7,20 +11,21 @@
     android:padding="16dp"
     android:visibility="visible"
     android:layout_gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
 
     <ImageView
+        android:id="@+id/notifyJockerIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat = "@drawable/ic_error"/>
 
     <TextView
+        android:id="@+id/notifyJockerLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="8dp"
-        android:text="@string/no_results_label"/>
+        tools:text = "@string/no_results_label"/>
 
 
 </LinearLayout>

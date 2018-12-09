@@ -14,9 +14,10 @@ import com.davidbragadeveloper.filmica.data.Film
 import com.davidbragadeveloper.filmica.data.repos.SearchFilmsRepo
 import com.davidbragadeveloper.filmica.view.films.FilmsActivity
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
+import com.davidbragadeveloper.filmica.view.utils.makeInvisible
 import kotlinx.android.synthetic.main.fragment_films.*
 import kotlinx.android.synthetic.main.layout_error.*
-import kotlinx.android.synthetic.main.layout_no_results.*
+import kotlinx.android.synthetic.main.layout_notify_joker.*
 
 
 class SearchFragment : BaseGridFilmsFragment (SearchFilmsRepo.films), FilmsActivity.OnQueryTextChangeListener {
@@ -30,14 +31,14 @@ class SearchFragment : BaseGridFilmsFragment (SearchFilmsRepo.films), FilmsActiv
     override fun reload(){}
 
     override fun onSuccess(): (MutableList<Film>) -> Unit {  return {
-        makeInvisible(listOf(progress!!,layoutError,layoutNoResults))
+        this@SearchFragment.view?.makeInvisible(listOf(progress!!,layoutError,notifyJockerLayout))
         list.visibility = View.VISIBLE
         adapter.setFilms(it)
     } }
 
     override fun onError(): (VolleyError) -> Unit {
         return {
-            makeInvisible(mutableListOf(progress!!, list,layoutNoResults))
+            this@SearchFragment.view?.makeInvisible(mutableListOf(progress!!, list,notifyJockerLayout))
             layoutError?.visibility = View.VISIBLE
             it.printStackTrace()
         }
@@ -59,8 +60,9 @@ class SearchFragment : BaseGridFilmsFragment (SearchFilmsRepo.films), FilmsActiv
     }
 
     private fun showLayoutNoResults() {
-        makeInvisible(listOf(progress!!, list, layoutError))
-        layoutNoResults.visibility = View.VISIBLE
+        view?.makeInvisible(listOf(progress!!, list, layoutError))
+        notifyJockerLabel.text = getString(R.string.no_results_label)
+        notifyJockerLayout.visibility = View.VISIBLE
     }
 
 

@@ -38,7 +38,7 @@ object DiscoverFilmsRepo : BaseFilmsRepo() {
                         it
                     )
                 )
-                callbackSucces(films)
+                callbackSucces.invoke(films)
             },
             {
                 callbackError.invoke(it)
@@ -50,6 +50,6 @@ object DiscoverFilmsRepo : BaseFilmsRepo() {
 
     override fun findFilmById(context: Context, id: String, callbackSuccess: (Film) -> Unit) {
         val film = films.find { it.id==id }
-        film?.let { callbackSuccess (it) }
+        film?.let { callbackSuccess.invoke(it) }
     }
 }

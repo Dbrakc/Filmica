@@ -18,5 +18,8 @@
     <string name="film_not_deleted">Film not deleted</string>
     <string name="undo_save">Undo save</string>
     <string name="film_not_saved">Film not saved</string>
+    <string name="no_trending_films">No trending films this week</string>
+    <string name="no_films_saved">No films saved</string>
+    <string name="click_movie_details">Click in a movie for details</string>
 
 </resources>

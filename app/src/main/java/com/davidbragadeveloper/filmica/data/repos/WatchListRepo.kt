@@ -12,7 +12,8 @@ object WatchListRepo: BaseFilmsRepo() {
 
     fun watchList (
         context: Context,
-        callbackSuccess: (List<Film>) -> Unit)
+        callbackSuccess: (List<Film>) -> Unit,
+        callbackNoResults: () -> Unit )
     {
         GlobalScope.launch(Dispatchers.Main){
             val async = async (Dispatchers.IO){
@@ -20,7 +21,12 @@ object WatchListRepo: BaseFilmsRepo() {
             }
 
             val films = async.await()
-            callbackSuccess.invoke(films)
+
+            if(!films.isEmpty()) {
+                callbackSuccess.invoke(films)
+            }else{
+                callbackNoResults.invoke()
+            }
         }
 
     }
@@ -39,7 +45,7 @@ object WatchListRepo: BaseFilmsRepo() {
             val film = async.await()
 
             film?.let {
-                callbackSuccess(it)
+                callbackSuccess.invoke(it)
             }
 
         }

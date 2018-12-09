@@ -15,10 +15,15 @@ import android.widget.Toast
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
 import com.davidbragadeveloper.filmica.data.repos.WatchListRepo
+import com.davidbragadeveloper.filmica.view.films.FilmsActivity
 import com.davidbragadeveloper.filmica.view.utils.SwipeToDeleteCallback
 import com.davidbragadeveloper.filmica.view.utils.base.BaseGridFilmsFragment
+import com.davidbragadeveloper.filmica.view.utils.makeInvisible
+
 
 import kotlinx.android.synthetic.main.fragment_watch_list.*
+
+import kotlinx.android.synthetic.main.layout_notify_joker.*
 
 class WatchListFragment : Fragment() {
 
@@ -48,9 +53,20 @@ class WatchListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        WatchListRepo.watchList(context!!){
-            adapter.setFilms(it.toMutableList())
-        }
+        WatchListRepo.watchList(context = context!!,
+            callbackSuccess = {
+                watchList.visibility = View.VISIBLE
+                notifyJockerLayout.visibility = View.INVISIBLE
+                adapter.setFilms(it.toMutableList())
+            },
+            callbackNoResults = {
+                watchList.visibility = View.INVISIBLE
+                notifyJockerLayout.visibility = View.VISIBLE
+
+                notifyJockerLabel.text = getString(R.string.no_films_saved)
+                notifyJockerLayout.visibility = View.VISIBLE
+            }
+        )
     }
 
 

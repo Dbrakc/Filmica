@@ -12,11 +12,17 @@ import com.davidbragadeveloper.filmica.data.Film
 object TrendingFilmsRepo : BaseFilmsRepo() {
 
 
-    fun trendingFilms(context: Context, callbackSucces: ((MutableList<Film>)->Unit), callbackError: ((VolleyError)->Unit)){
+    fun trendingFilms(
+        context: Context,
+        callbackSucces: ((MutableList<Film>)->Unit),
+        callbackError: ((VolleyError)->Unit),
+        callbackNoResults: () -> Unit
+    ){
         if(films.isEmpty()) {
             requestTrendingFilms(
                 callbackSucces,
                 callbackError,
+                callbackNoResults,
                 context
             )
         }else {
@@ -28,6 +34,7 @@ object TrendingFilmsRepo : BaseFilmsRepo() {
     private fun requestTrendingFilms(
         callbackSucces: (MutableList<Film>) -> Unit,
         callbackError: (VolleyError) -> Unit,
+        callbackNoResults: () -> Unit,
         context: Context) {
         val url = ApiRoutes.trendingURL()
         val request = JsonObjectRequest(
@@ -38,7 +45,11 @@ object TrendingFilmsRepo : BaseFilmsRepo() {
                         it
                     )
                 )
-                callbackSucces(films)
+                if(!films.isEmpty()) {
+                    callbackSucces.invoke(films)
+                }else{
+                    callbackNoResults.invoke()
+                }
             },
             {
                 callbackError.invoke(it)
@@ -50,7 +61,7 @@ object TrendingFilmsRepo : BaseFilmsRepo() {
     override fun findFilmById(context: Context, id: String, callbackSuccess: (Film) -> Unit) {
         val film = films.find { it.id==id }
         film?.let {
-            callbackSuccess(it)
+            callbackSuccess.invoke(it)
         }
     }
 
