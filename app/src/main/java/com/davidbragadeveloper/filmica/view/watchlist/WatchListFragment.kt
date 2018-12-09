@@ -3,12 +3,14 @@ package com.davidbragadeveloper.filmica.view.watchlist
 
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.davidbragadeveloper.filmica.R
 import com.davidbragadeveloper.filmica.data.repos.DiscoverFilmsRepo
@@ -74,8 +76,17 @@ class WatchListFragment : Fragment() {
 
     private fun deleteFilmAt(position: Int) {
         val film = adapter.getFilm(position)
-        WatchListRepo.deleteFilm(context!!,film){
+        val context = context !!
+        WatchListRepo.deleteFilm(context,film){
             adapter.removeFilmAt(position)
+            Snackbar.make(this@WatchListFragment.view!!,R.string.label_delete, Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.undo_delete)){
+                    WatchListRepo.saveFilm(context,film){
+                        adapter.addFilm(film)
+                        Toast.makeText(context,getString(R.string.film_not_deleted), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .show()
         }
 
     }

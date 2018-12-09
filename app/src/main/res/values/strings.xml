@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Filmica</string>
     <string name="label_add">Add to watch list</string>
+    <string name="label_delete">Delet from watch list</string>
     <string name="title_genre">Genre</string>
     <string name="title_release">Release</string>
     <string name="lable_overview">Overview</string>
@@ -12,9 +13,8 @@
     <string name="title_trendingList">Trending film</string>
     <string name="template_share">Let\'s watch %s, Movie DB rates it with %.1f/10</string>
     <string name="title_search">Search</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_results_label">There\'s no results, you must retry, you must search for more than 2 characters</string>
+    <string name="undo_delete">Undo delete</string>
+    <string name="film_not_deleted">Film not deleted</string>
 
 </resources>
