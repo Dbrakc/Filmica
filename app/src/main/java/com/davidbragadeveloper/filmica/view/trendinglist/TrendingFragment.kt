@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.layout_notify_joker.*
 class TrendingFragment : BaseGridFilmsFragment(TrendingFilmsRepo.films){
 
     override fun loadPage(page: Int) {
-        TrendingFilmsRepo.trendingFilms(context!!, onSuccess(),onError()){
+        TrendingFilmsRepo.trendingFilms(context!!, page, onSuccess(),onError()){
             this@TrendingFragment.view?.makeInvisible(listOf(progress!!, list, layoutError))
             notifyJockerLabel.text = getString(R.string.no_trending_films)
             notifyJockerLayout.visibility = View.VISIBLE

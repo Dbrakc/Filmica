@@ -10,15 +10,18 @@ import com.davidbragadeveloper.filmica.data.Film
 
 object TrendingFilmsRepo : BaseFilmsRepo() {
 
+    var lastPage = 1;
 
     fun trendingFilms(
         context: Context,
+        page : Int = 1,
         callbackSucces: ((MutableList<Film>)->Unit),
         callbackError: ((VolleyError)->Unit),
         callbackNoResults: () -> Unit
     ){
-        if(films.isEmpty()) {
+        if(DiscoverFilmsRepo.films.isEmpty() || page > DiscoverFilmsRepo.lastPage) {
             requestTrendingFilms(
+                page,
                 callbackSucces,
                 callbackError,
                 callbackNoResults,
@@ -28,14 +31,17 @@ object TrendingFilmsRepo : BaseFilmsRepo() {
             callbackSucces.invoke(films)
         }
 
+        lastPage = page
+
     }
 
     private fun requestTrendingFilms(
+        page: Int = 1,
         callbackSucces: (MutableList<Film>) -> Unit,
         callbackError: (VolleyError) -> Unit,
         callbackNoResults: () -> Unit,
         context: Context) {
-        val url = ApiRoutes.trendingURL()
+        val url = ApiRoutes.trendingURL(page= page)
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             {

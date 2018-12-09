@@ -52,7 +52,7 @@ object SearchFilmsRepo : BaseFilmsRepo() {
                 films.clear()
                 films.addAll(
                     Film.parseFilms(
-                        it
+                        it, 10
                     )
                 )
                 if(!films.isEmpty()) {

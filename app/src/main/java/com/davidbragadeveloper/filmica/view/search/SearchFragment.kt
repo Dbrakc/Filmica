@@ -19,20 +19,8 @@ class SearchFragment : BaseGridFilmsFragment (SearchFilmsRepo.films), FilmsActiv
 
     lateinit var currentQuery : String
 
-    override fun loadPage(page: Int) {
-        SearchFilmsRepo.searchedFilms(query = currentQuery,
-            context = context!!,
-            page = page,
-            callbackSucces = onSuccess(),
-            callbackNoResults = {
-                showLayoutNoResults()
-            },
-            callbackError = onError())
-    }
+    override fun loadPage(page: Int) {}
 
-
-
-    override fun reload(){}
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

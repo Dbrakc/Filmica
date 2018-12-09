@@ -26,11 +26,15 @@ object ApiRoutes {
         .appendPath("3")
         .appendQueryParameter("api_key", BuildConfig.MovieDBApiKey)
 
-    fun trendingURL(timeWindow: String = "Week"): String {
+    fun trendingURL(
+        timeWindow: String = "Week",
+        page: Int = 1
+    ): String {
         return getUriBuilder()
             .appendPath("trending")
             .appendPath("movie")
             .appendPath(timeWindow)
+            .appendQueryParameter("page", page.toString())
             .build()
             .toString()
     }
