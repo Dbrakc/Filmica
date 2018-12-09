@@ -101,9 +101,9 @@ class DetailsFragment : Fragment () {
                 val context = context!!
                 repo.saveFilm(context, film){ film ->
                     Snackbar.make(view,R.string.label_add,Snackbar.LENGTH_LONG)
-                        .setAction("Undo save"){
+                        .setAction(getString(R.string.undo_save)){
                             repo.deleteFilm(context,film){
-                                Toast.makeText(context,"Film not saved", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context,getString(R.string.film_not_saved), Toast.LENGTH_SHORT).show()
                             }
                         }
                         .show()

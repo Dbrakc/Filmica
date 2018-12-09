@@ -16,5 +16,7 @@
     <string name="no_results_label">There\'s no results, you must retry, you must search for more than 2 characters</string>
     <string name="undo_delete">Undo delete</string>
     <string name="film_not_deleted">Film not deleted</string>
+    <string name="undo_save">Undo save</string>
+    <string name="film_not_saved">Film not saved</string>
 
 </resources>
