@@ -82,6 +82,8 @@ class DetailsFragment : Fragment () {
             context = context!!,
             id = id){film ->
 
+            this@DetailsFragment.film = film
+
             showScrollView()
 
             with(film) {
